@@ -34,11 +34,18 @@ connectDB().catch((error) => {
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: [
-    "https://table-book-liart.vercel.app",
-    "https://table-book-5h6vfb86p-yadwinder1234s-projects.vercel.app",
-    "https://table-book-pilu.onrender.com"
-  ],
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+
+    if (
+      origin.includes("vercel.app") ||
+      origin.includes("localhost")
+    ) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("Not allowed by CORS"));
+  },
   credentials: true
 }));
 app.use(express.json());
