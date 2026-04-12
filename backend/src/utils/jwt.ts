@@ -11,7 +11,7 @@ export const generateAccessToken = (payload: Omit<TokenPayload, 'type'>) => {
   return jwt.sign(
     { ...payload, type: 'access' },
     process.env.JWT_SECRET || 'secret',
-    { expiresIn: process.env.JWT_EXPIRE || '15m' } as jwt.SignOptions
+    { expiresIn: process.env.JWT_EXPIRE || '15m' }
   );
 };
 
@@ -19,7 +19,7 @@ export const generateRefreshToken = (userId: string) => {
   return jwt.sign(
     { userId, type: 'refresh' },
     process.env.JWT_REFRESH_SECRET || 'refresh-secret',
-    { expiresIn: process.env.JWT_REFRESH_EXPIRE || '7d' } as jwt.SignOptions
+    { expiresIn: process.env.JWT_REFRESH_EXPIRE || '7d' }
   );
 };
 
