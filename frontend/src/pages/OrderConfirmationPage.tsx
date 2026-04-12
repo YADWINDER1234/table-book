@@ -99,7 +99,7 @@ const OrderConfirmationPage: React.FC = () => {
         specialOccasion: orderData?.specialOccasion,
       };
 
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1'}/delivery/create`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://table-book-pilu.onrender.com/api/v1'}/delivery/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
