@@ -162,7 +162,7 @@ export const markHelpful = async (req: Request, res: Response) => {
 
     const review = await Review.findById(id);
     if (!review) {
-      throw new AppError('Review not found', 404);
+      throw new AppError(404, 'Review not found');
     }
 
     if (helpful) {

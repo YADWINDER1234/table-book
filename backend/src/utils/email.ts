@@ -296,13 +296,14 @@ export const sendDeliveryConfirmationEmail = async (email: string, delivery: any
 export const sendSpecialOccasionEmail = async (email: string, delivery: any): Promise<void> => {
   try {
     const occasion = delivery.specialOccasion?.type || 'celebration';
-    const occasionEmoji = {
+    const occasionEmojiMap: Record<string, string> = {
       birthday: '🎂',
       anniversary: '💕',
       celebration: '🎉',
       promotion: '🏆',
       wedding: '💒',
-    }[occasion] || '✨';
+    };
+    const occasionEmoji = occasionEmojiMap[occasion] || '✨';
 
     const htmlContent = `
 <!DOCTYPE html>

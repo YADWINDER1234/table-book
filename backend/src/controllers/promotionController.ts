@@ -54,7 +54,7 @@ export const validatePromoCode = async (req: Request, res: Response) => {
 
     const promo = await Promotion.findOne({ code: code.toUpperCase() });
     if (!promo) {
-      throw new AppError('Invalid promo code', 404);
+      throw new AppError(404, 'Invalid promo code');
     }
 
     const now = new Date();
@@ -93,12 +93,12 @@ export const redeemPromoCode = async (req: Request, res: Response) => {
 
     const promo = await Promotion.findOne({ code: code.toUpperCase() });
     if (!promo) {
-      throw new AppError('Invalid promo code', 404);
+      throw new AppError(404, 'Invalid promo code');
     }
 
     // Check minimum order value
     if (promo.minOrderValue && orderAmount < promo.minOrderValue) {
-      throw new AppError(`Minimum order value is ${promo.minOrderValue}`, 400);
+      throw new AppError(400, `Minimum order value is ${promo.minOrderValue}`);
     }
 
     let discount = 0;
@@ -113,7 +113,9 @@ export const redeemPromoCode = async (req: Request, res: Response) => {
 
     // Update usage
     promo.usageCount += 1;
-    promo.usedBy.push(userId);
+    if (promo.usedBy) {
+      promo.usedBy.push(userId);
+    }
     await promo.save();
 
     res.status(200).json({
@@ -161,7 +163,7 @@ export const updatePromoCode = async (req: Request, res: Response) => {
     });
 
     if (!promo) {
-      throw new AppError('Promo not found', 404);
+      throw new AppError(404, 'Promo not found');
     }
 
     res.status(200).json({
@@ -180,7 +182,7 @@ export const deletePromoCode = async (req: Request, res: Response) => {
 
     const promo = await Promotion.findByIdAndDelete(id);
     if (!promo) {
-      throw new AppError('Promo not found', 404);
+      throw new AppError(404, 'Promo not found');
     }
 
     res.status(200).json({
@@ -224,7 +226,7 @@ export const validateReferral = async (req: Request, res: Response) => {
 
     const referral = await Referral.findOne({ referralCode });
     if (!referral) {
-      throw new AppError('Invalid referral code', 404);
+      throw new AppError(404, 'Invalid referral code');
     }
 
     res.status(200).json({
@@ -243,7 +245,7 @@ export const completeReferral = async (req: Request, res: Response) => {
 
     const referral = await Referral.findOne({ referralCode });
     if (!referral) {
-      throw new AppError('Invalid referral code', 404);
+      throw new AppError(404, 'Invalid referral code');
     }
 
     referral.refereeId = userId;

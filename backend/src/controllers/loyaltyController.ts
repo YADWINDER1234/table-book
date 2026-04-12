@@ -124,7 +124,7 @@ export const getLoyaltyTransactions = async (req: Request, res: Response) => {
 
     const loyalty = await UserLoyalty.findOne({ userId });
     if (!loyalty) {
-      throw new AppError('Loyalty account not found', 404);
+      throw new AppError(404, 'Loyalty account not found');
     }
 
     const skip = ((Number(page) - 1) * Number(limit)) as number;

@@ -54,7 +54,7 @@ export const getEventById = async (req: Request, res: Response) => {
       .populate('dedicatedCoordinator', 'name email');
 
     if (!event) {
-      throw new AppError('Event not found', 404);
+      throw new AppError(404, 'Event not found');
     }
 
     res.status(200).json({
@@ -78,7 +78,7 @@ export const updateEventStatus = async (req: Request, res: Response) => {
     );
 
     if (!event) {
-      throw new AppError('Event not found', 404);
+      throw new AppError(404, 'Event not found');
     }
 
     res.status(200).json({
@@ -125,7 +125,7 @@ export const addBookingToEvent = async (req: Request, res: Response) => {
     );
 
     if (!event) {
-      throw new AppError('Event not found', 404);
+      throw new AppError(404, 'Event not found');
     }
 
     res.status(200).json({
@@ -147,7 +147,7 @@ export const generateEventProposal = async (req: Request, res: Response) => {
       .populate('dedicatedCoordinator', 'name email');
 
     if (!event) {
-      throw new AppError('Event not found', 404);
+      throw new AppError(404, 'Event not found');
     }
 
     const pricePerHead = 50; // Base price
