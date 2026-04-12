@@ -75,8 +75,8 @@ app.use(errorMiddleware);
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`\n🚀 Server running on http://localhost:${PORT}`);
-  console.log(`📚 API Documentation: http://localhost:${PORT}/api/v1`);
+  console.log(`\n🚀 Server running on port ${PORT}`);
+  console.log(`📚 API Documentation available on port ${PORT} at /api/v1`);
   console.log(`✅ Database connected\n`);
 });
 
