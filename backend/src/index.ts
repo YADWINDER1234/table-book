@@ -34,7 +34,11 @@ connectDB().catch((error) => {
 // Middleware
 app.use(helmet());
 app.use(cors({
-  origin: true,
+  origin: [
+    "https://table-book-liart.vercel.app",
+    "https://table-book-5h6vfb86p-yadwinder1234s-projects.vercel.app",
+    "https://table-book-pilu.onrender.com"
+  ],
   credentials: true
 }));
 app.use(express.json());
