@@ -1,4 +1,10 @@
-export const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+const getApiUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (!envUrl) return 'http://localhost:5000/api/v1';
+  return envUrl.endsWith('/api/v1') ? envUrl : `${envUrl.replace(/\/$/, '')}/api/v1`;
+};
+
+export const API_BASE_URL = getApiUrl();
 
 export const BOOKING_STATUS = {
   PENDING: 'pending',

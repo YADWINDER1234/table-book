@@ -1,7 +1,14 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
 import { ApiResponse } from '../types';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
+const getApiUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (!envUrl) return 'http://localhost:5000/api/v1';
+  // Safely ensure /api/v1 is appended if the user just put the root Render URL
+  return envUrl.endsWith('/api/v1') ? envUrl : `${envUrl.replace(/\/$/, '')}/api/v1`;
+};
+
+const API_URL = getApiUrl();
 
 class ApiClient {
   private client: AxiosInstance;
