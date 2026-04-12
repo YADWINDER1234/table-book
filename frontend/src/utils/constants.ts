@@ -1,6 +1,6 @@
 const getApiUrl = () => {
   const envUrl = import.meta.env.VITE_API_URL;
-  if (!envUrl) return 'http://localhost:5000/api/v1';
+  if (!envUrl) return 'https://table-book-pilu.onrender.com/api/v1';
   return envUrl.endsWith('/api/v1') ? envUrl : `${envUrl.replace(/\/$/, '')}/api/v1`;
 };
 
