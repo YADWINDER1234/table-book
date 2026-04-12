@@ -40,7 +40,7 @@ export const createDelivery = async (req: Request, res: Response) => {
 
     // Validate menu items and calculate total
     let totalAmount = 0;
-    const validatedItems = [];
+    const validatedItems: any[] = [];
 
     for (let item of items) {
       try {
