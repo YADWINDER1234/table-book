@@ -60,7 +60,7 @@ export const calculateDuration = (startTime: string, endTime: string): number =>
 };
 
 export const getTimeSlots = (): string[] => {
-  const slots = [];
+  const slots: string[] = [];
   for (let i = 10; i < 22; i++) {
     slots.push(`${String(i).padStart(2, '0')}:00`);
     slots.push(`${String(i).padStart(2, '0')}:30`);

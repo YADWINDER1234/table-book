@@ -92,7 +92,7 @@ const MenuPage: React.FC = () => {
   };
 
   const getDietaryBadges = (dietary: MenuItem['dietary']) => {
-    const badges = [];
+      const badges: string[] = [];
     if (dietary.vegetarian) badges.push('Vegetarian');
     if (dietary.vegan) badges.push('Vegan');
     if (dietary.glutenFree) badges.push('GF');

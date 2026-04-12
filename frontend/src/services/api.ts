@@ -57,23 +57,27 @@ class ApiClient {
 
   async get<T>(endpoint: string, config = {}): Promise<T> {
     const response = await this.client.get<ApiResponse<T>>(endpoint, config);
-    return response.data.data;
+    return response.data.data as T;
   }
 
-  async post<T>(endpoint: string, data?: any, config = {}): Promise<T> {
+  async post<T>(endpoint: string, data?: any, config = {}): Promise<T> {        
     const response = await this.client.post<ApiResponse<T>>(endpoint, data, config);
-    return response.data.data;
+    return response.data.data as T;
   }
 
   async put<T>(endpoint: string, data?: any, config = {}): Promise<T> {
     const response = await this.client.put<ApiResponse<T>>(endpoint, data, config);
-    return response.data.data;
+    return response.data.data as T;
   }
 
   async delete<T>(endpoint: string, config = {}): Promise<T> {
     const response = await this.client.delete<ApiResponse<T>>(endpoint, config);
-    return response.data.data;
+    return response.data.data as T;
+  }
+
+  async patch<T>(endpoint: string, data?: any, config = {}): Promise<T> {
+    const response = await this.client.patch<ApiResponse<T>>(endpoint, data, config);
+    return response.data.data as T;
   }
 }
-
 export const apiClient = new ApiClient();

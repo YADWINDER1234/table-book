@@ -167,7 +167,7 @@ const CheckoutPage: React.FC = () => {
           }));
 
           // Show success message with filled fields
-          let filledAddressFields = [];
+            let filledAddressFields: string[] = [];
           if (streetAddress) filledAddressFields.push('Address');
           if (city) filledAddressFields.push('City');
           if (state) filledAddressFields.push('State');

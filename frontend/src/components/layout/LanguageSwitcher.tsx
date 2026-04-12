@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { supportedLanguages, setLanguage, getLanguage } from '../utils/i18n';
+import { supportedLanguages, setLanguage, getLanguage } from '../../utils/i18n';
 
 const LanguageSwitcher: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);

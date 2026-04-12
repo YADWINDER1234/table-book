@@ -115,7 +115,7 @@ export const translations = {
 
 export type LanguageCode = 'en' | 'es' | 'fr';
 
-let currentLanguage: LanguageCode = ('en' as LanguageCode) || localStorage.getItem('language') || 'en';
+let currentLanguage: LanguageCode = (localStorage.getItem('language') as LanguageCode) || 'en';
 
 export const setLanguage = (lang: LanguageCode) => {
   currentLanguage = lang;
