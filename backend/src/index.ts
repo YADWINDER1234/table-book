@@ -32,7 +32,7 @@ connectDB().catch((error) => {
 });
 
 // Middleware
-app.use(helmet());
+// ✅ CORS FIRST
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin) return callback(null, true);
@@ -48,6 +48,9 @@ app.use(cors({
   },
   credentials: true
 }));
+
+// ✅ THEN other middleware
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(requestLogger);
