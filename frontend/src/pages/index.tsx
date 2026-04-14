@@ -19,12 +19,15 @@ export const Home: React.FC = () => {
   <div className="w-full">
     {/* Hero Section */}
     <section className="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1544025162-8af9983f4fec?q=80&w=2070&auto=format&fit=crop')" }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/75 to-background" />
-      
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src="https://cdn.pixabay.com/video/2021/08/25/86266-592874136_large.mp4" type="video/mp4" />
+      </video>
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
