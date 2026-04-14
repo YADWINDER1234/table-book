@@ -10,7 +10,7 @@ export const createReview = asyncHandler(async (req: Request, res: Response) => 
 
   // Handle 'auto' bookingId from frontend demo
   let actualBookingId = bookingId;
-  let tableId = null;
+  let tableId: any = null;
 
   if (bookingId === 'auto') {
     // Find any booking for this user to attach the review to
