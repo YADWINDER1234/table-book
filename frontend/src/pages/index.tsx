@@ -26,8 +26,9 @@ export const Home: React.FC = () => {
         playsInline
         className="absolute inset-0 w-full h-full object-cover"
       >
-        <source src="https://cdn.pixabay.com/video/2021/08/25/86266-592874136_large.mp4" type="video/mp4" />
+        <source src="/videos/hero-bg.mp4" type="video/mp4" />
       </video>
+      <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/75 to-background" />
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
