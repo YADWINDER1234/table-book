@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { Button } from '../common';
+import { Moon, Sun } from 'lucide-react';
 
 export const Header: React.FC = () => {
   const { isAuthenticated, user, logout } = useAuth();
@@ -9,6 +10,22 @@ export const Header: React.FC = () => {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Check initial preference from document element class or localStorage
+    if (document.documentElement.classList.contains('dark')) {
+      setIsDarkMode(true);
+    }
+    
+    // Fallback: If not set on html, check localStorage (if we want persistence later)
+    // For now we'll just respect the global state.
+  }, []);
+
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.classList.toggle('dark');
+  };
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
@@ -66,6 +83,14 @@ export const Header: React.FC = () => {
             )}
 
             <div className="w-px h-5 bg-outline-variant/40 mx-3" />
+
+            <button
+              onClick={toggleTheme}
+              className="p-2 text-on-surface-variant hover:text-primary transition-colors duration-300 rounded-full hover:bg-surface-container-highest/50 mr-2"
+              aria-label="Toggle theme"
+            >
+              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
 
             {isAuthenticated ? (
               <div className="flex items-center gap-3">
@@ -135,6 +160,17 @@ export const Header: React.FC = () => {
             {user?.role === 'admin' && (
               <MobileNavLink to="/admin" label="Dashboard" onClick={() => setMobileOpen(false)} />
             )}
+            
+            <div className="flex items-center justify-between border-t border-outline-variant/20 pt-4 pb-2">
+              <span className="text-sm text-on-surface-variant font-medium tracking-wide">Theme</span>
+              <button
+                onClick={toggleTheme}
+                className="flex items-center justify-center p-2 text-on-surface-variant hover:text-primary transition-colors bg-surface-container/50 rounded-full"
+              >
+                {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+            </div>
+
             <div className="border-t border-outline-variant/20 pt-4">
               {isAuthenticated ? (
                 <button

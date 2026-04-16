@@ -30,7 +30,7 @@ h1, h2, h3, h4, h5, h6, .display, .headline {
 
 /* Glassmorphism & Signatures */
 .glass-panel {
-  @apply bg-[rgba(20,19,17,0.85)] backdrop-blur-[20px] shadow-luxury-ambient;
+  @apply bg-[rgba(255,255,255,0.85)] backdrop-blur-[20px] shadow-luxury-ambient;
 }
 
 .signature-gradient {
@@ -89,10 +89,10 @@ textarea:focus {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0c0b0a;
+  background: #FDFBF7;
 }
 ::-webkit-scrollbar-thumb {
-  background: #3d3a33;
+  background: #D9D3C7;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -102,5 +102,5 @@ textarea:focus {
 /* Selection */
 ::selection {
   background: rgba(201, 169, 110, 0.25);
-  color: #f0ece4;
+  color: #1C1B18;
 }
