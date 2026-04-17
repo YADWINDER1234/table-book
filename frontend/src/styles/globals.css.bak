@@ -50,63 +50,76 @@
     --color-on-surface: #f0ece4;
     --color-on-surface-variant: #9e998e;
   }
+}
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  @apply bg-surface text-on-surface antialiased;
+}
+
+h1, h2, h3, h4, h5, h6, .display, .headline {
+  font-family: 'Noto Serif', serif;
+  letter-spacing: -0.01em;
+  @apply font-normal text-on-surface;
+}
+
+#root {
+  min-height: 100vh;
+  @apply flex flex-col bg-surface;
+}
+
+/* Glassmorphism & Signatures */
+.glass-panel {
+  @apply bg-[rgba(255,255,255,0.85)] backdrop-blur-[20px] shadow-luxury-ambient;
+}
+
+.signature-gradient {
+  background: linear-gradient(135deg, #C9A96E, #a38550);
+}
+
+/* Quiet Inputs / Utilities */
+.input-quiet {
+  @apply bg-transparent border-0 border-b border-outline-variant rounded-none px-0 py-2 transition-colors duration-300 text-on-surface;
+}
+.input-quiet:focus {
+  @apply border-primary outline-none ring-0;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
-    @apply bg-surface text-on-surface antialiased;
-  }
-
-  h1, h2, h3, h4, h5, h6, .display, .headline {
-    font-family: 'Noto Serif', serif;
-    letter-spacing: -0.01em;
-    @apply font-normal text-on-surface;
-  }
-
-  #root {
-    min-height: 100vh;
-    @apply flex flex-col bg-surface;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@layer components {
-  /* Glassmorphism & Signatures */
-  .glass-panel {
-    @apply bg-[rgba(255,255,255,0.85)] backdrop-blur-[20px] shadow-luxury-ambient;
-  }
-
-  .signature-gradient {
-    background: linear-gradient(135deg, #C9A96E, #a38550);
-  }
-
-  /* Quiet Inputs / Utilities */
-  .input-quiet {
-    @apply bg-transparent border-0 border-b border-outline-variant rounded-none px-0 py-2 transition-colors duration-300 text-on-surface;
-  }
-  .input-quiet:focus {
-    @apply border-primary outline-none ring-0;
-  }
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
 }
 
-@layer utilities {
-  .animate-fade-in {
-    animation: fadeIn 0.3s ease-out;
-  }
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
 
-  .animate-shimmer {
-    background: linear-gradient(90deg, transparent, rgba(201,169,110,0.08), transparent);
-    background-size: 200% 100%;
-    animation: shimmer 3s ease infinite;
-  }
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(201,169,110,0.08), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease infinite;
 }
 
 ::placeholder {

@@ -77,11 +77,22 @@ export const Home: React.FC = () => {
             >
               My Reservations
             </motion.a>
-        <div className="w-5 h-8 rounded-full border border-outline-variant/40 flex justify-center pt-2">
+          )}
+        </div>
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+      >
+        <div className="w-5 h-8 rounded-full border border-white/40 flex justify-center pt-2">
           <motion.div
             animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
-            className="w-1 h-1 rounded-full bg-primary/60"
+            transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }} 
+            className="w-1 h-1 rounded-full bg-primary"
           />
         </div>
       </motion.div>
