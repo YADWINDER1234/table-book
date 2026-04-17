@@ -17,6 +17,9 @@ export const Header: React.FC = () => {
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark) || document.documentElement.classList.contains('dark');
+    
+    setIsDarkMode(isDark);
+    if (isDark) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
@@ -33,6 +36,7 @@ export const Header: React.FC = () => {
       document.documentElement.classList.remove('dark');
       localStorage.setItem('theme', 'light');
     }
+  };
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', handleScroll);
