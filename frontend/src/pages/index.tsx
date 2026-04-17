@@ -43,11 +43,11 @@ export const Home: React.FC = () => {
         >
           Est. 2018 · Kharar
         </motion.span>
-        <h1 className="headline text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-[0.95] uppercase tracking-[0.15em] drop-shadow-xl">
+        <h1 className="headline text-5xl md:text-7xl lg:text-8xl font-bold !text-white mb-6 leading-[0.95] uppercase tracking-[0.15em] drop-shadow-[0_0_10px_rgba(0,0,0,0.5)]">
           The Prime Cut
         </h1>
         <div className="w-16 h-px bg-primary/60 mx-auto mb-6 shadow-[0_0_10px_rgba(201,169,110,0.5)]" />
-        <p className="text-base md:text-lg text-white/90 mb-12 max-w-xl mx-auto font-light leading-relaxed drop-shadow-sm">
+        <p className="text-base md:text-lg !text-white/90 mb-12 max-w-xl mx-auto font-light leading-relaxed drop-shadow-[0_0_8px_rgba(0,0,0,0.8)]">
           An elevated steakhouse experience where heritage meets craft. Secure your table.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -63,17 +63,17 @@ export const Home: React.FC = () => {
             <motion.a 
               whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.05)" }}
               whileTap={{ scale: 0.98 }}
-              href="/login" 
-              className="px-10 py-4 border border-white/40 text-white rounded-full font-medium text-sm tracking-[0.1em] uppercase hover:border-primary hover:text-primary transition-colors duration-300"
+              href="/login"
+              className="px-10 py-4 border border-white/40 !text-white rounded-full font-medium text-sm tracking-[0.1em] uppercase hover:border-primary hover:!text-primary transition-colors duration-300"
             >
               Sign In
             </motion.a>
           ) : (
-            <motion.a 
+            <motion.a
               whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.05)" }}
               whileTap={{ scale: 0.98 }}
-              href="/bookings" 
-              className="px-10 py-4 border border-white/40 text-white rounded-full font-medium text-sm tracking-[0.1em] uppercase hover:border-primary hover:text-primary transition-colors duration-300"
+              href="/bookings"
+              className="px-10 py-4 border border-white/40 !text-white rounded-full font-medium text-sm tracking-[0.1em] uppercase hover:border-primary hover:!text-primary transition-colors duration-300"
             >
               My Reservations
             </motion.a>
