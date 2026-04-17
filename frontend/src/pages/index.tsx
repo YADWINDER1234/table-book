@@ -28,51 +28,55 @@ export const Home: React.FC = () => {
       >
         <source src="/videos/hero-bg.mp4" type="video/mp4" />
       </video>
-      <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-background/75 to-background" />
-      <motion.div 
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/80" />
+      <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease: "easeOut" }}
         className="relative z-10 text-center px-4 max-w-4xl pt-20"
       >
-        <motion.span 
+        <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3, duration: 0.8 }}
-          className="text-primary text-xs uppercase tracking-[0.4em] font-medium mb-6 block"
+          className="text-primary text-xs uppercase tracking-[0.4em] font-medium mb-6 block drop-shadow-md"
         >
           Est. 2018 · Kharar
         </motion.span>
-        <h1 className="headline text-5xl md:text-7xl lg:text-8xl font-bold text-on-surface mb-6 leading-[0.95] uppercase tracking-[0.15em]">
+        <h1 className="headline text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-[0.95] uppercase tracking-[0.15em] drop-shadow-xl">
           The Prime Cut
         </h1>
-        <div className="w-16 h-px bg-primary/40 mx-auto mb-6" />
-        <p className="text-base md:text-lg text-on-surface-variant mb-12 max-w-xl mx-auto font-light leading-relaxed">
+        <div className="w-16 h-px bg-primary/60 mx-auto mb-6 shadow-[0_0_10px_rgba(201,169,110,0.5)]" />
+        <p className="text-base md:text-lg text-white/90 mb-12 max-w-xl mx-auto font-light leading-relaxed drop-shadow-sm">
           An elevated steakhouse experience where heritage meets craft. Secure your table.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/book" className="px-10 py-4 bg-primary text-on-primary rounded-full font-medium text-sm tracking-[0.1em] uppercase hover:shadow-luxury-ambient hover:scale-[1.02] transition-all duration-300">
+          <motion.a
+            whileHover={{ scale: 1.02, boxShadow: "0px 0px 20px rgba(201, 169, 110, 0.4)" }}
+            whileTap={{ scale: 0.98 }}
+            href="/book" 
+            className="px-10 py-4 bg-primary text-on-primary rounded-full font-medium text-sm tracking-[0.1em] uppercase transition-colors duration-300"
+          >
             Reserve a Table
-          </a>
+          </motion.a>
           {!isAuthenticated ? (
-            <a href="/login" className="px-10 py-4 border border-outline-variant/60 text-on-surface rounded-full font-medium text-sm tracking-[0.1em] uppercase hover:border-primary/40 hover:text-primary transition-all duration-300">
+            <motion.a 
+              whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.05)" }}
+              whileTap={{ scale: 0.98 }}
+              href="/login" 
+              className="px-10 py-4 border border-white/40 text-white rounded-full font-medium text-sm tracking-[0.1em] uppercase hover:border-primary hover:text-primary transition-colors duration-300"
+            >
               Sign In
-            </a>
+            </motion.a>
           ) : (
-            <a href="/bookings" className="px-10 py-4 border border-outline-variant/60 text-on-surface rounded-full font-medium text-sm tracking-[0.1em] uppercase hover:border-primary/40 hover:text-primary transition-all duration-300">
+            <motion.a 
+              whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.05)" }}
+              whileTap={{ scale: 0.98 }}
+              href="/bookings" 
+              className="px-10 py-4 border border-white/40 text-white rounded-full font-medium text-sm tracking-[0.1em] uppercase hover:border-primary hover:text-primary transition-colors duration-300"
+            >
               My Reservations
-            </a>
-          )}
-        </div>
-      </motion.div>
-
-      {/* Scroll indicator */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      >
+            </motion.a>
         <div className="w-5 h-8 rounded-full border border-outline-variant/40 flex justify-center pt-2">
           <motion.div
             animate={{ y: [0, 8, 0] }}
@@ -84,9 +88,9 @@ export const Home: React.FC = () => {
     </section>
 
     {/* Featured Highlights */}
-    <section className="py-28 bg-surface-container-lowest">
+    <section className="py-32 md:py-40 bg-surface-container-lowest">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="text-center mb-16">
+        <div className="text-center mb-20">
           <span className="text-primary text-xs uppercase tracking-[0.4em] font-medium mb-4 block">The Experience</span>
           <h2 className="headline text-3xl md:text-4xl uppercase tracking-[0.12em] text-on-surface">Crafted for Distinction</h2>
         </div>
@@ -114,12 +118,12 @@ export const Home: React.FC = () => {
     </section>
 
     {/* The Menu Preview */}
-    <section className="py-24 bg-surface relative overflow-hidden">
+    <section className="py-32 md:py-40 bg-surface relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary opacity-[0.03] blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary opacity-[0.03] blur-[120px] rounded-full pointer-events-none" />
-      
+
       <div className="max-w-6xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-16">
+        <div className="text-center mb-20">
           <span className="text-primary text-xs uppercase tracking-[0.4em] font-medium mb-4 block">Our Offerings</span>
           <h2 className="headline text-3xl md:text-4xl uppercase tracking-[0.12em] text-on-surface">Signature Cuts</h2>
         </div>
@@ -162,7 +166,7 @@ export const Home: React.FC = () => {
           </div>
         </div>
 
-        <div className="text-center mt-16">
+        <div className="text-center mt-20">
           <a href="/book" className="text-sm uppercase tracking-[0.2em] font-medium text-primary hover:text-on-surface transition-colors underline underline-offset-8">
             Secure a Table to Dine
           </a>
@@ -171,9 +175,9 @@ export const Home: React.FC = () => {
     </section>
 
     {/* Celebrity Reviews */}
-    <section className="py-28 bg-background">
+    <section className="py-32 md:py-40 bg-background">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="text-center mb-16">
+        <div className="text-center mb-20">
           <span className="text-primary text-xs uppercase tracking-[0.4em] font-medium mb-4 block">Testimonials</span>
           <h2 className="headline text-3xl md:text-4xl text-center uppercase tracking-[0.12em] text-on-surface">Critique & Acclaim</h2>
         </div>

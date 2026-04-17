@@ -51,7 +51,7 @@ export const Header: React.FC = () => {
   const isHome = location.pathname === '/';
   const navBg = scrolled || !isHome
     ? 'bg-surface/95 backdrop-blur-xl shadow-nav-glow border-b border-outline-variant/30'
-    : 'bg-transparent';
+    : 'bg-gradient-to-b from-black/80 via-black/40 to-transparent';
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${navBg}`}>
