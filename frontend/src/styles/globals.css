@@ -9,27 +9,27 @@
     -moz-osx-font-smoothing: grayscale;
   }
   :root {
-    --color-background: #FDFBF7;
-    --color-surface: #FFFFFF;
-    --color-surface-bright: #F8F5F0;
+    --color-background: #F2EFE9;
+    --color-surface: #F8F5EF;
+    --color-surface-bright: #FCFAF5;
     --color-surface-container-lowest: #FFFFFF;
-    --color-surface-container-low: #FDFBF7;
-    --color-surface-container: #F8F5F0;
-    --color-surface-container-high: #F3EFE6;
-    --color-surface-container-highest: #EAE4D9;
-    --color-primary: #C9A96E;
+    --color-surface-container-low: #F8F5EF;
+    --color-surface-container: #F2EFE9;
+    --color-surface-container-high: #EBE5DB;
+    --color-surface-container-highest: #E3DBCE;
+    --color-primary: #B89B60;
     --color-on-primary: #FFFFFF;
-    --color-primary-container: #F5EEDC;
-    --color-secondary: #9B7676;
+    --color-primary-container: #E8DCC2;
+    --color-secondary: #8A6565;
     --color-on-secondary: #FFFFFF;
-    --color-secondary-container: #F0E4E4;
-    --color-on-secondary-container: #3a2020;
-    --color-tertiary: #647A58;
-    --color-error: #BA1A1A;
+    --color-secondary-container: #E4D5D5;
+    --color-on-secondary-container: #361818;
+    --color-tertiary: #5A6D4E;
+    --color-error: #B3261E;
     --color-on-error: #FFFFFF;
-    --color-outline-variant: #D9D3C7;
-    --color-on-surface: #1C1B18;
-    --color-on-surface-variant: #4E4C45;
+    --color-outline-variant: #CFC6B8;
+    --color-on-surface: #2E2D2A;
+    --color-on-surface-variant: #5A5852;
   }
 
   .dark {
