@@ -4,6 +4,8 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { Button } from '../common';
 import { Moon, Sun } from 'lucide-react';
 
+import { AnimatePresence, motion } from 'framer-motion';
+
 export const Header: React.FC = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
@@ -67,136 +69,146 @@ export const Header: React.FC = () => {
             </div>
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-1">
-            <NavLink to="/" label="Home" active={location.pathname === '/'} />
-            <NavLink to="/menu" label="Menu" active={location.pathname === '/menu'} />
-            <NavLink to="/reviews" label="Reviews" active={location.pathname === '/reviews'} />
-            <NavLink to="/book" label="Reserve" active={location.pathname === '/book'} />
-            
-            {isAuthenticated && (
-              <>
-                <NavLink to="/bookings" label="My Bookings" active={location.pathname === '/bookings'} />
-                <NavLink to="/loyalty" label="Loyalty" active={location.pathname === '/loyalty'} />
-              </>
-            )}
-            
-            <NavLink to="/group-events" label="Events" active={location.pathname === '/group-events'} />
-            
-            {user?.role === 'admin' && (
-              <NavLink to="/admin" label="Dashboard" active={location.pathname === '/admin'} />
-            )}
-
-            <div className="w-px h-5 bg-outline-variant/40 mx-3" />
-
+          {/* Desktop Nav - Replaced with Sidebar Toggle */}
+          <div className="flex items-center gap-4">
             <button
-              onClick={toggleTheme}
-              className="p-2 text-on-surface-variant hover:text-primary transition-colors duration-300 rounded-full hover:bg-surface-container-highest/50 mr-2"
-              aria-label="Toggle theme"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="text-on-surface-variant hover:text-on-surface p-2 transition-colors z-[60]"
+              aria-label="Toggle navigation menu"
             >
-              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
+              <div className="w-6 flex flex-col gap-1.5 items-end relative">
+                <span className={`block h-[2px] bg-current transition-all duration-300 ${mobileOpen ? 'w-6 rotate-45 translate-y-[8px]' : 'w-6'}`} />
+                <span className={`block h-[2px] bg-current transition-all duration-300 ${mobileOpen ? 'w-0 opacity-0' : 'w-4'}`} />
+                <span className={`block h-[2px] bg-current transition-all duration-300 ${mobileOpen ? 'w-6 -rotate-45 -translate-y-[8px]' : 'w-5'}`} />
+              </div>
             </button>
-
-            {isAuthenticated ? (
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
-                    <span className="text-primary text-xs font-medium">
-                      {user?.firstName?.charAt(0)?.toUpperCase() || 'U'}
-                    </span>
-                  </div>
-                  <span className="text-on-surface-variant text-sm hidden lg:block">{user?.firstName}</span>
-                </div>
-                <button
-                  onClick={handleLogout}
-                  className="text-xs text-on-surface-variant hover:text-error transition-colors uppercase tracking-wider"
-                >
-                  Sign Out
-                </button>
-              </div>
-            ) : (
-              <div className="flex items-center gap-3">
-                <Link
-                  to="/login"
-                  className="text-sm text-on-surface-variant hover:text-on-surface transition-colors tracking-wide"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to="/signup"
-                  className="text-sm px-5 py-2 rounded-full bg-primary/10 text-primary border border-primary/30 hover:bg-primary/20 transition-all duration-300 tracking-wide"
-                >
-                  Join Us
-                </Link>
-              </div>
-            )}
-          </nav>
-
-          {/* Mobile Toggle */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden text-on-surface-variant hover:text-on-surface p-2 transition-colors"
-            aria-label="Toggle navigation"
-          >
-            <div className="w-5 flex flex-col gap-1.5">
-              <span className={`block h-px bg-current transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-[4px]' : ''}`} />
-              <span className={`block h-px bg-current transition-all duration-300 ${mobileOpen ? 'opacity-0' : ''}`} />
-              <span className={`block h-px bg-current transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-[4px]' : ''}`} />
-            </div>
-          </button>
+          </div>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {mobileOpen && (
-        <div className="md:hidden bg-surface/98 backdrop-blur-xl border-t border-outline-variant/20 animate-fade-in">
-          <div className="px-6 py-6 space-y-4">
-            <MobileNavLink to="/" label="Home" onClick={() => setMobileOpen(false)} />
-            <MobileNavLink to="/menu" label="Menu" onClick={() => setMobileOpen(false)} />
-            <MobileNavLink to="/reviews" label="Reviews" onClick={() => setMobileOpen(false)} />
-            <MobileNavLink to="/book" label="Reserve a Table" onClick={() => setMobileOpen(false)} />
-            {isAuthenticated && (
-              <>
-                <MobileNavLink to="/bookings" label="My Bookings" onClick={() => setMobileOpen(false)} />
-                <MobileNavLink to="/loyalty" label="Loyalty Program" onClick={() => setMobileOpen(false)} />
-              </>
-            )}
-            <MobileNavLink to="/group-events" label="Group Events" onClick={() => setMobileOpen(false)} />
-            {user?.role === 'admin' && (
-              <MobileNavLink to="/admin" label="Dashboard" onClick={() => setMobileOpen(false)} />
-            )}
+      {/* Elegant Sidebar Drawer */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileOpen(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+            />
             
-            <div className="flex items-center justify-between border-t border-outline-variant/20 pt-4 pb-2">
-              <span className="text-sm text-on-surface-variant font-medium tracking-wide">Theme</span>
-              <button
-                onClick={toggleTheme}
-                className="flex items-center justify-center p-2 text-on-surface-variant hover:text-primary transition-colors bg-surface-container/50 rounded-full"
-              >
-                {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-              </button>
-            </div>
+            {/* Drawer */}
+            <motion.div 
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 bottom-0 w-full sm:w-96 bg-surface shadow-2xl z-50 overflow-y-auto flex flex-col"
+            >
+              <div className="flex flex-col h-full px-8 py-10 pt-24">
+                <nav className="flex flex-col gap-6 flex-1 text-2xl font-serif">
+                  <SidebarLink to="/" label="Home" active={location.pathname === '/'} onClick={() => setMobileOpen(false)} />
+                  <SidebarLink to="/menu" label="Menu" active={location.pathname === '/menu'} onClick={() => setMobileOpen(false)} />
+                  <SidebarLink to="/reviews" label="Reviews" active={location.pathname === '/reviews'} onClick={() => setMobileOpen(false)} />
+                  <SidebarLink to="/book" label="Reserve a Table" active={location.pathname === '/book'} onClick={() => setMobileOpen(false)} />
+                  
+                  {isAuthenticated && (
+                    <>
+                      <SidebarLink to="/bookings" label="My Bookings" active={location.pathname === '/bookings'} onClick={() => setMobileOpen(false)} />
+                      <SidebarLink to="/loyalty" label="Loyalty Program" active={location.pathname === '/loyalty'} onClick={() => setMobileOpen(false)} />
+                    </>
+                  )}
+                  <SidebarLink to="/group-events" label="Group Events" active={location.pathname === '/group-events'} onClick={() => setMobileOpen(false)} />
+                  
+                  {user?.role === 'admin' && (
+                    <SidebarLink to="/admin" label="Dashboard" active={location.pathname === '/admin'} onClick={() => setMobileOpen(false)} />
+                  )}
+                </nav>
 
-            <div className="border-t border-outline-variant/20 pt-4">
-              {isAuthenticated ? (
-                <button
-                  onClick={() => { handleLogout(); setMobileOpen(false); }}
-                  className="text-sm text-on-surface-variant hover:text-error uppercase tracking-wider"
-                >
-                  Sign Out
-                </button>
-              ) : (
-                <div className="flex gap-4">
-                  <Link to="/login" onClick={() => setMobileOpen(false)} className="text-sm text-on-surface-variant">Sign In</Link>
-                  <Link to="/signup" onClick={() => setMobileOpen(false)} className="text-sm text-primary">Join Us</Link>
+                <div className="mt-8 border-t border-outline-variant/30 pt-8 space-y-6">
+                  {/* Theme Toggle */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium tracking-widest uppercase text-on-surface-variant">Theme</span>
+                    <button
+                      onClick={toggleTheme}
+                      className="p-3 text-on-surface-variant hover:text-primary hover:bg-primary/10 rounded-full transition-all"
+                    >
+                      {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+                    </button>
+                  </div>
+
+                  {/* Auth Actions */}
+                  {isAuthenticated ? (
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center">
+                          <span className="text-primary font-medium">
+                            {user?.firstName?.charAt(0)?.toUpperCase() || 'U'}
+                          </span>
+                        </div>
+                        <span className="text-on-surface font-medium">{user?.firstName}</span>
+                      </div>
+                      <button
+                        onClick={() => { handleLogout(); setMobileOpen(false); }}
+                        className="text-sm border border-error/50 text-error px-4 py-2 hover:bg-error hover:text-white rounded-full transition-all uppercase tracking-wider font-semibold"
+                      >
+                        Sign Out
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-4">
+                      <Link 
+                        to="/login" 
+                        onClick={() => setMobileOpen(false)}
+                        className="w-full text-center py-3 border border-outline-variant/50 rounded-full text-on-surface hover:border-primary hover:text-primary transition-colors font-medium tracking-wide uppercase text-sm"
+                      >
+                        Sign In
+                      </Link>
+                      <Link 
+                        to="/signup" 
+                        onClick={() => setMobileOpen(false)}
+                        className="w-full text-center py-3 bg-primary text-on-primary rounded-full hover:bg-primary/90 transition-colors font-medium tracking-wide uppercase text-sm"
+                      >
+                         Join Us
+                      </Link>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
+
+const SidebarLink: React.FC<{ to: string; label: string; active?: boolean; onClick: () => void }> = ({
+  to,
+  label,
+  active,
+  onClick
+}) => (
+  <Link
+    to={to}
+    onClick={onClick}
+    className={`group flex items-center justify-between transition-colors ${
+      active ? 'text-primary' : 'text-on-surface hover:text-primary'
+    }`}
+  >
+    <span className="relative overflow-hidden">
+      <span className="block transition-transform duration-300 group-hover:-translate-y-full">
+        {label}
+      </span>
+      <span className="absolute top-0 block translate-y-full transition-transform duration-300 group-hover:translate-y-0 italic text-primary">
+        {label}
+      </span>
+    </span>
+    {active && <span className="w-2 h-2 rounded-full bg-primary" />}
+  </Link>
+);
 
 const NavLink: React.FC<{ to: string; label: string; active: boolean }> = ({ to, label, active }) => (
   <Link
