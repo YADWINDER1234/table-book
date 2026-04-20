@@ -240,7 +240,7 @@ const ReviewPage: React.FC = () => {
           <div className="space-y-4">
             {[
               { name: 'Aditi Tyagi', review: 'Absolutely exceptional dining experience. The perfect ambiance and impeccable service!' },
-              { name: 'Bipasha Chatterjee', review: 'Outstanding steaks and an impressive wine selection. Highly recommended!' },
+              { name: 'Bipasha', review: 'Outstanding steaks and an impressive wine selection. Highly recommended!' },
               { name: 'Yadwinder Singh', review: 'A truly memorable evening with friends. Everything was perfect.' },
             ].map((reviewer, idx) => (
               <motion.div
