@@ -48,13 +48,8 @@ export const Header: React.FC = () => {
     navigate('/login');
   };
 
-  const isHome = location.pathname === '/';
-  const navBg = scrolled || !isHome
-    ? 'bg-surface/95 backdrop-blur-xl shadow-nav-glow border-b border-outline-variant/30'
-    : 'bg-gradient-to-b from-black/80 via-black/40 to-transparent';
-
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${navBg}`}>
+    <header className="fixed top-0 left-0 right-0 z-50 bg-surface shadow-sm transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 lg:h-20">
           {/* Logo */}
