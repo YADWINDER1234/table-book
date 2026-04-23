@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast, { Toaster } from 'react-hot-toast';
 import { bookingService } from '../services/bookingService';
+import { toINR } from '../utils/pricing';
 
 interface MenuItem {
   _id: string;
@@ -280,7 +281,7 @@ const MenuPage: React.FC = () => {
 
                   {/* Price and Add Button */}
                   <div className="flex justify-between items-center pt-4 border-t border-outline-variant/30">
-                    <span className="text-2xl font-bold text-primary">₹{(item.price * 83).toFixed(0)}</span>
+                    <span className="text-2xl font-bold text-primary">₹{toINR(item.price).toFixed(0)}</span>
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -323,7 +324,7 @@ const MenuPage: React.FC = () => {
                     className="flex justify-between text-sm text-on-surface/80 pb-2 border-b border-outline-variant/20"
                   >
                     <span className="flex-1">{item.name}</span>
-                    <span className="font-semibold text-primary ml-2">₹{(item.price * 83).toFixed(0)}</span>
+                    <span className="font-semibold text-primary ml-2">₹{toINR(item.price).toFixed(0)}</span>
                   </motion.div>
                 ))}
               </div>
@@ -331,7 +332,7 @@ const MenuPage: React.FC = () => {
                 <div className="flex justify-between mb-4 font-semibold text-on-surface">
                   <span>Total:</span>
                   <span className="text-primary text-lg">
-                    ₹{(selectedItems.reduce((sum, item) => sum + item.price, 0) * 83).toFixed(0)}
+                    ₹{toINR(selectedItems.reduce((sum, item) => sum + item.price, 0)).toFixed(0)}
                   </span>
                 </div>
                 <motion.button
@@ -346,7 +347,7 @@ const MenuPage: React.FC = () => {
                     const cartData = {
                       items: selectedItems,
                       total: selectedItems.reduce((sum, item) => sum + item.price, 0),
-                      totalINR: selectedItems.reduce((sum, item) => sum + item.price, 0) * 83,
+                      totalINR: toINR(selectedItems.reduce((sum, item) => sum + item.price, 0)),
                       addedAt: new Date().toISOString()
                     };
                     localStorage.setItem('cartItems', JSON.stringify(cartData));

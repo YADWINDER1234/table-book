@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { calculateOrderBreakdownINR, toINR } from '../utils/pricing';
 
 interface OrderItem {
   menuItemId: string;
@@ -36,7 +37,6 @@ const OrderConfirmationPage: React.FC = () => {
   
   const [orderData, setOrderData] = useState<DeliveryData | null>(null);
   const [items, setItems] = useState<OrderItem[]>([]);
-  const [totalAmount, setTotalAmount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const [successData, setSuccessData] = useState<any>(null);
@@ -52,28 +52,21 @@ const OrderConfirmationPage: React.FC = () => {
 
     setOrderData(data);
     setItems(data.items);
-    calculateTotal(data.items);
     setLoading(false);
   }, [location.state, navigate]);
 
-  const calculateTotal = (itemsList: OrderItem[]) => {
-    const subtotal = itemsList.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    const deliveryFee = 25;
-    const tax = (subtotal * 0.05); // 5% tax
-    setTotalAmount(subtotal + deliveryFee + tax);
-  };
+  const baseSubtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const { subtotal, deliveryFee, tax, total } = calculateOrderBreakdownINR(baseSubtotal);
 
   const handleQuantityChange = (index: number, newQuantity: number) => {
     const updatedItems = [...items];
     updatedItems[index].quantity = newQuantity;
     setItems(updatedItems);
-    calculateTotal(updatedItems);
   };
 
   const handleRemoveItem = (index: number) => {
     const updatedItems = items.filter((_, i) => i !== index);
     setItems(updatedItems);
-    calculateTotal(updatedItems);
   };
 
   const handleConfirmOrder = async () => {
@@ -126,7 +119,7 @@ const OrderConfirmationPage: React.FC = () => {
         city: orderData?.city,
         state: orderData?.state,
         postalCode: orderData?.postalCode,
-        total: totalAmount.toFixed(2),
+        total: total.toFixed(2),
         recipient: orderData?.recipientName,
         email: orderData?.recipientPhone,
       });
@@ -263,10 +256,6 @@ const OrderConfirmationPage: React.FC = () => {
     );
   }
 
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const deliveryFee = 25;
-  const tax = subtotal * 0.05;
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-surface pt-24 pb-12">
       <div className="max-w-2xl mx-auto px-6">
@@ -299,7 +288,7 @@ const OrderConfirmationPage: React.FC = () => {
                   >
                     <div className="flex-1">
                       <h3 className="font-semibold text-on-surface">{item.name}</h3>
-                      <p className="text-sm text-on-surface-variant">₹{item.price.toFixed(2)} each</p>
+                      <p className="text-sm text-on-surface-variant">₹{toINR(item.price).toFixed(0)} each</p>
                     </div>
 
                     <div className="flex items-center gap-4">
@@ -321,7 +310,7 @@ const OrderConfirmationPage: React.FC = () => {
 
                       {/* Item Total */}
                       <div className="text-right min-w-20">
-                        <p className="text-lg font-bold text-primary">₹{(item.price * item.quantity).toFixed(2)}</p>
+                        <p className="text-lg font-bold text-primary">₹{toINR(item.price * item.quantity).toFixed(0)}</p>
                       </div>
 
                       {/* Remove Button */}
@@ -369,22 +358,22 @@ const OrderConfirmationPage: React.FC = () => {
             <div className="space-y-3 mb-4">
               <div className="flex justify-between text-on-surface-variant">
                 <span>Subtotal</span>
-                <span>₹{subtotal.toFixed(2)}</span>
+                <span>₹{subtotal}</span>
               </div>
               <div className="flex justify-between text-on-surface-variant">
                 <span>Tax (5%)</span>
-                <span>₹{tax.toFixed(2)}</span>
+                <span>₹{tax}</span>
               </div>
               <div className="flex justify-between text-on-surface-variant border-t border-outline-variant pt-3">
                 <span>Delivery Fee</span>
-                <span>₹{deliveryFee.toFixed(2)}</span>
+                <span>₹{deliveryFee}</span>
               </div>
             </div>
             
             <div className="flex justify-between items-center border-t-2 border-primary/40 pt-4">
               <span className="text-lg font-bold text-on-surface">Final Total</span>
               <span className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                ₹{totalAmount.toFixed(2)}
+                ₹{total.toFixed(2)}
               </span>
             </div>
           </div>

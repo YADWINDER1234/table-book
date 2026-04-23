@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { calculateOrderBreakdownINR, toINR } from '../utils/pricing';
 
 interface CartItem {
   _id: string;
@@ -20,7 +21,6 @@ const CheckoutPage: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated, user, isLoading: authLoading } = useAuth();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [totalINR, setTotalINR] = useState(0);
   const [loading, setLoading] = useState(true);
   const [locationLoading, setLocationLoading] = useState(false);
   const [locationError, setLocationError] = useState('');
@@ -38,6 +38,9 @@ const CheckoutPage: React.FC = () => {
     longitude: 0,
     specialInstructions: '',
   });
+
+  const baseSubtotal = cartItems.reduce((sum, item) => sum + item.price, 0);
+  const { subtotal, deliveryFee, tax, total } = calculateOrderBreakdownINR(baseSubtotal);
 
   useEffect(() => {
     // Check authentication status
@@ -75,7 +78,6 @@ const CheckoutPage: React.FC = () => {
         try {
           const cartData = JSON.parse(savedCart);
           setCartItems(cartData.items || []);
-          setTotalINR(cartData.totalINR || 0);
         } catch (error) {
           console.error('Failed to load cart:', error);
           navigate('/menu');
@@ -341,7 +343,7 @@ const CheckoutPage: React.FC = () => {
                       <p className="font-semibold text-on-surface">{item.name}</p>
                       <p className="text-sm text-on-surface-variant">{item.category}</p>
                     </div>
-                    <span className="text-primary font-bold">₹{(item.price * 83).toFixed(0)}</span>
+                    <span className="text-primary font-bold">₹{toINR(item.price).toFixed(0)}</span>
                   </motion.div>
                 ))}
               </div>
@@ -454,21 +456,21 @@ const CheckoutPage: React.FC = () => {
             <div className="space-y-3 mb-6 pb-6 border-b border-outline-variant/30">
               <div className="flex justify-between items-center py-2">
                 <span className="text-on-surface-variant text-sm">Items Subtotal</span>
-                <span className="text-on-surface font-semibold text-base">₹{Math.round(totalINR)}</span>
+                <span className="text-on-surface font-semibold text-base">₹{subtotal}</span>
               </div>
               <div className="flex justify-between items-center py-2">
                 <span className="text-on-surface-variant text-sm">📦 Delivery Fee</span>
-                <span className="text-on-surface font-semibold text-base">₹{Math.round(25 * 83)}</span>
+                <span className="text-on-surface font-semibold text-base">₹{deliveryFee}</span>
               </div>
               <div className="flex justify-between items-center py-2">
                 <span className="text-on-surface-variant text-sm">🧾 Taxes (5%)</span>
-                <span className="text-on-surface font-semibold text-base">₹{Math.round((Math.round(totalINR) + Math.round(25 * 83)) * 0.05)}</span>
+                <span className="text-on-surface font-semibold text-base">₹{tax}</span>
               </div>
             </div>
 
             <div className="flex justify-between items-center mb-8 pb-8 border-b-2 border-primary/50">
               <span className="text-lg font-bold text-on-surface">Final Total</span>
-              <span className="text-4xl font-bold text-primary">₹{Math.round(Math.round(totalINR) + Math.round(25 * 83) + Math.round((Math.round(totalINR) + Math.round(25 * 83)) * 0.05))}</span>
+              <span className="text-4xl font-bold text-primary">₹{total}</span>
             </div>
 
             <motion.button

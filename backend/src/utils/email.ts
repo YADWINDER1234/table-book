@@ -172,6 +172,9 @@ export const sendBookingConfirmationEmail = async (data: BookingEmailData): Prom
 
 export const sendDeliveryConfirmationEmail = async (email: string, delivery: any): Promise<void> => {
   try {
+    const taxAmount = delivery.taxAmount ?? Math.round((delivery.totalAmount + delivery.deliveryFee) * 0.05);
+    const grandTotal = delivery.totalAmount + delivery.deliveryFee + taxAmount;
+
     const htmlContent = `
 <!DOCTYPE html>
 <html>
@@ -256,8 +259,11 @@ export const sendDeliveryConfirmationEmail = async (email: string, delivery: any
                   <td style="padding:8px 0; color:#9e998e; font-size:13px;">Delivery Fee: <span style="float:right; color:#f0ece4;">₹${delivery.deliveryFee.toFixed(2)}</span></td>
                 </tr>
                 <tr>
+                  <td style="padding:8px 0; color:#9e998e; font-size:13px;">Tax (5%): <span style="float:right; color:#f0ece4;">₹${taxAmount.toFixed(2)}</span></td>
+                </tr>
+                <tr>
                   <td style="padding:12px 0; border-top:1px solid rgba(61,58,51,0.4); color:#C9A96E; font-size:15px; font-weight:bold;">
-                    Grand Total: <span style="float:right;">₹${(delivery.totalAmount + delivery.deliveryFee).toFixed(2)}</span>
+                    Grand Total: <span style="float:right;">₹${grandTotal.toFixed(2)}</span>
                   </td>
                 </tr>
               </table>

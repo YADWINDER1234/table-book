@@ -4,6 +4,7 @@ import MenuItem from '../models/Menu';
 import { AppError } from '../utils/errors';
 import { sendDeliveryConfirmationEmail, sendSpecialOccasionEmail } from '../utils/email';
 import { v4 as uuidv4 } from 'uuid';
+import { calculateDeliveryTotalsINR, toINR } from '../utils/pricing';
 
 export const createDelivery = async (req: Request, res: Response) => {
   try {
@@ -38,8 +39,8 @@ export const createDelivery = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Missing delivery address details' });
     }
 
-    // Validate menu items and calculate total
-    let totalAmount = 0;
+    // Validate menu items and calculate base-currency subtotal before INR conversion
+    let baseSubtotal = 0;
     const validatedItems: any[] = [];
 
     for (let item of items) {
@@ -50,11 +51,12 @@ export const createDelivery = async (req: Request, res: Response) => {
           return res.status(404).json({ message: `Menu item ${item.menuItemId} not found` });
         }
         const quantity = item.quantity || 1;
-        totalAmount += menuItem.price * quantity;
+        const itemBasePrice = menuItem.price;
+        baseSubtotal += itemBasePrice * quantity;
         validatedItems.push({
           menuItemId: item.menuItemId,
           name: item.name || menuItem.name,
-          price: menuItem.price,
+          price: toINR(itemBasePrice),
           quantity: quantity,
         });
       } catch (itemError) {
@@ -63,7 +65,7 @@ export const createDelivery = async (req: Request, res: Response) => {
       }
     }
 
-    const deliveryFee = 25;
+    const { subtotal, deliveryFee, taxAmount, grandTotal } = calculateDeliveryTotalsINR(baseSubtotal);
     const deliveryId = `DEL-${Date.now()}-${uuidv4().slice(0, 8)}`;
 
     console.log('✅ Validated items, creating delivery document');
@@ -84,8 +86,9 @@ export const createDelivery = async (req: Request, res: Response) => {
       recipientPhone: recipientPhone || '+91-0000000000',
       deliveryNotes: deliveryNotes || '',
       specialOccasion: specialOccasion || { type: 'regular' },
-      totalAmount,
+      totalAmount: subtotal,
       deliveryFee,
+      taxAmount,
       paymentStatus: 'paid',
       status: 'confirmed',
       estimatedDeliveryTime: new Date(Date.now() + 45 * 60 * 1000),
@@ -97,7 +100,10 @@ export const createDelivery = async (req: Request, res: Response) => {
     res.status(201).json({
       success: true,
       message: 'Delivery order created successfully',
-      data: delivery,
+      data: {
+        ...delivery.toObject(),
+        grandTotal,
+      },
     });
   } catch (error) {
     console.error('❌ Delivery creation error:', error);
@@ -200,7 +206,16 @@ export const getDeliveryStats = async (req: Request, res: Response) => {
 
     const totalRevenue = await Delivery.aggregate([
       { $match: { paymentStatus: 'paid' } },
-      { $group: { _id: null, total: { $sum: '$totalAmount' } } },
+      {
+        $group: {
+          _id: null,
+          total: {
+            $sum: {
+              $add: ['$totalAmount', '$deliveryFee', { $ifNull: ['$taxAmount', 0] }],
+            },
+          },
+        },
+      },
     ]);
 
     res.status(200).json({

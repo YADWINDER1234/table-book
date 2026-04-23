@@ -23,6 +23,7 @@ export interface IDelivery extends Document {
   deliveryNotes?: string;
   totalAmount: number;
   deliveryFee: number;
+  taxAmount: number;
   estimatedDeliveryTime?: Date;
   status: 'pending' | 'confirmed' | 'preparing' | 'on-way' | 'delivered' | 'cancelled';
   paymentStatus: 'unpaid' | 'paid' | 'partial';
@@ -118,6 +119,10 @@ const deliverySchema = new mongoose.Schema<IDelivery>(
     deliveryFee: {
       type: Number,
       default: 25,
+    },
+    taxAmount: {
+      type: Number,
+      default: 0,
     },
     estimatedDeliveryTime: Date,
     status: {
